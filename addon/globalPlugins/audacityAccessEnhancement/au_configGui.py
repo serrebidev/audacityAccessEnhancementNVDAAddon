@@ -1,6 +1,6 @@
 # globalPlugins\audacityAccessEnhancement\au_configGui.py
 # a part of audacityAccessEnhancement add-on
-# Copyright 2018-2023,paulber19
+# Copyright 2018-2024,paulber19
 # released under GPL.
 
 import addonHandler
@@ -14,6 +14,7 @@ path = os.path.join(_curAddon.path, "shared")
 sys.path.append(path)
 from au_addonConfigManager import _addonConfigManager
 del sys.path[-1]
+
 addonHandler.initTranslation()
 
 
@@ -135,6 +136,8 @@ class UpdateSettingsPanel(SettingsPanel):
 	def saveSettingChanges(self):
 		if self.autoCheckForUpdatesCheckBox.IsChecked() != _addonConfigManager .toggleAutoUpdateCheck(False):
 			_addonConfigManager .toggleAutoUpdateCheck(True)
+			from . updateHandler.update_check import setCheckForUpdate
+			setCheckForUpdate(_addonConfigManager.toggleAutoUpdateCheck(False))
 		if self.updateReleaseVersionsToDevVersionsCheckBox.IsChecked() != (
 			_addonConfigManager .toggleUpdateReleaseVersionsToDevVersions(False)):
 			_addonConfigManager .toggleUpdateReleaseVersionsToDevVersions(True)

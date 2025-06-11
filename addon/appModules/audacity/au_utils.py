@@ -1,24 +1,18 @@
 # appModules\audacity\au_utils.py
 # A part of audacityAccessEnhancement add-on
-# Copyright (C) 2018-2022, paulber19
+# Copyright (C) 2018-2025, paulber19
 # This file is covered by the GNU General Public License.
 
 import addonHandler
-import wx
 import api
 import ui
 import winUser
 import time
 import queueHandler
-import gui
-import config
 import speech.speech
-try:
-	# NVDA >= 2024.1
-	speakOnDemand = speech.speech.SpeechMode.onDemand
-except AttributeError:
-	# NVDA <= 2023.3
-	speakOnDemand = None
+
+speakOnDemand = speech.speech.SpeechMode.onDemand
+
 addonHandler.initTranslation()
 
 # winuser.h constant
@@ -42,18 +36,6 @@ def makeAddonWindowTitle(dialogTitle):
 	# Translators:  title of all add-on dialog boxs.
 	return _("{addonSummary}'s add-on - {dialogTitle}").format(
 		addonSummary=addonSummary, dialogTitle=dialogTitle)
-
-
-def messageBox(
-	message,
-	caption=wx.MessageBoxCaptionStr,
-	style=wx.OK | wx.CENTER,
-	parent=None):
-	option = config.conf["presentation"]["reportObjectDescriptions"]
-	config.conf["presentation"]["reportObjectDescriptions"] = True
-	ret = gui.messageBox(message, caption, style, parent)
-	config.conf["presentation"]["reportObjectDescriptions"] = option
-	return ret
 
 
 def getPositionXY(obj):
@@ -90,11 +72,11 @@ def MouseWheelBack():
 	winUser.mouse_event(MOUSEEVENTF_WHEEL, 0, 0, -120, None)
 
 
-def executeWithSpeakOnDemand(func , *args, **kwargs):
+def executeWithSpeakOnDemand(func, *args, **kwargs):
 	from speech.speech import _speechState, SpeechMode
 	if not speakOnDemand or _speechState.speechMode != SpeechMode.onDemand:
-		return func( *args, **kwargs)
-	_speechState.speechMode  = SpeechMode.talk
+		return func(*args, **kwargs)
+	_speechState.speechMode = SpeechMode.talk
 	ret = func(*args, **kwargs)
 	_speechState.speechMode = SpeechMode.onDemand
 	return ret

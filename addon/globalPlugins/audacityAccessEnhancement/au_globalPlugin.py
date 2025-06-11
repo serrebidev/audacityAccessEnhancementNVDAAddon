@@ -1,6 +1,6 @@
 # globalPlugins\audacityAccessEnhancement\au_globalPlugin.py
 # a part of audacityAccessEnhancement add-on
-# Copyright (C) 2019-2020 Paulber19
+# Copyright (C) 2019-2024 Paulber19
 # This file is covered by the GNU General Public License.
 
 
@@ -15,6 +15,7 @@ path = os.path.join(addon.path, "shared")
 sys.path.append(path)
 from au_addonConfigManager import _addonConfigManager  # noqa:E402
 del sys.path[-1]
+
 addonHandler.initTranslation()
 
 
@@ -22,9 +23,10 @@ class AudacityGlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self, *args, **kwargs):
 		super(AudacityGlobalPlugin, self).__init__(*args, **kwargs)
 		self.installSettingsMenu()
+		from .updateHandler.update_check import setCheckForUpdate
+		setCheckForUpdate(_addonConfigManager.toggleAutoUpdateCheck(False))
 		from . updateHandler import autoUpdateCheck
-		if _addonConfigManager.toggleAutoUpdateCheck(False):
-			autoUpdateCheck(_addonConfigManager.toggleUpdateReleaseVersionsToDevVersions(False))  # noqa:E501
+		autoUpdateCheck(_addonConfigManager.toggleUpdateReleaseVersionsToDevVersions(False))
 
 	def installSettingsMenu(self):
 		self.preferencesMenu = gui.mainFrame.sysTrayIcon.preferencesMenu

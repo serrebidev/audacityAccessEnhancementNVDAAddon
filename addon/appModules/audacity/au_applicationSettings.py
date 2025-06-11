@@ -1,6 +1,6 @@
 # appModules/audacity/au_applicationSettings.py.
 # a part of audacityAccessEnhancement add-on
-# Copyright 2018-2021 paulber19
+# Copyright 2018-2025 paulber19
 # This file is covered by the GNU General Public License.
 
 import os
@@ -19,6 +19,7 @@ class ApplicationSettingsManager(object):
 
 	def __init__(self):
 		self.settingsDir = self._getSettingsFolderPath()
+		self._settings = None
 
 	@property
 	def initialized(self):
@@ -45,8 +46,14 @@ class ApplicationSettingsManager(object):
 	def getSettings(self):
 		if not self.initialized:
 			return None
-		settings = AudacityCFGFileHandler(self.settingsDir).settings
-		return settings
+		if self._settings is not None:
+			return self._settings
+		self._settings = AudacityCFGFileHandler(self.settingsDir).settings
+		return self._settings
+
+	def updateSettings(self):
+		self._settings = None
+		self.getSettings()
 
 	def getAudioTimeFormat(self):
 		settings = self.getSettings()
@@ -93,3 +100,20 @@ class AudacityCFGFileHandler(object):
 				settings[k] = lineList[1].strip()
 		log.debug("AudacityCFGFileHandler: settings loaded: %s" % settings)
 		return settings
+
+
+_applicationSettingsManager = None
+
+
+def getApplicationSettingsManager():
+	global _applicationSettingsManager
+	if _applicationSettingsManager is not None:
+		return _applicationSettingsManager
+	applicationSettingsManager = ApplicationSettingsManager()
+	if applicationSettingsManager.initialized:
+		_applicationSettingsManager = applicationSettingsManager
+		return _applicationSettingsManager
+	return None
+
+
+getApplicationSettingsManager()

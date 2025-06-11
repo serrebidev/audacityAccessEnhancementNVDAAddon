@@ -1,6 +1,6 @@
 # appModules\audacity\__init__.py
 # a part of audacityAccessEnhancement add-on
-# Copyright (C) 2018-2023, Paulber19
+# Copyright (C) 2018-2025, Paulber19
 # This file is covered by the GNU General Public License.
 # Released under GPL 2
 
@@ -49,8 +49,6 @@ from .au_timerControl import (
 	SELFOR_HHMMSS_HUNDREDTHS, SELFOR_HHMMSS_MILLISECONDS, SELFOR_HHMMSS_SAMPLES,
 	SELFOR_SAMPLES,
 )
-
-
 from .au_NVDAStrings import NVDAString
 import sys
 _curAddon = addonHandler.getCodeAddon()
@@ -71,7 +69,9 @@ del sys.path[-1]
 sharedPath = os.path.join(_curAddon.path, "shared")
 sys.path.append(sharedPath)
 from au_addonConfigManager import _addonConfigManager
+from messages import alert
 del sys.path[-1]
+del sys.modules["messages"]
 
 addonHandler.initTranslation()
 
@@ -374,6 +374,9 @@ class Track(NVDAObjects.NVDAObject):
 		return states
 
 	def event_gainFocus(self):
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
+		applicationSettingsManager.updateSettings()
 		super(Track, self).event_gainFocus()
 
 	@staticmethod
@@ -406,6 +409,9 @@ class TimerControlEdit(NVDAObjects.NVDAObject):
 		ui.message(msg)
 
 	def event_gainFocus(self):
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
+		applicationSettingsManager.updateSettings()
 		tc = au_timerControl.TimerControl(self, self.editFormat)
 		(sLabel, sTime) = tc.getLabelAndTime()
 		try:
@@ -693,16 +699,16 @@ class TimerControlDigit(NVDAObjects.NVDAObject):
 class AudioPositionTimerControlEdit(TimerControlEdit):
 	def initOverlayClass(self):
 		super().initOverlayClass()
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getAudioTimeFormat()
 
 
 class AudioPositionTimerControlDigit(TimerControlDigit):
 	def initOverlayClass(self):
 		printDebug("AudioPositionTimerControlDigit: initOverlayClass")
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getAudioTimeFormat()
 		tc = au_timerControl.TimerControl(self.parent, self.editFormat)
 		self.editFormatID = tc.selectionFormatID
@@ -717,16 +723,16 @@ class SelectionTimerControlEdit(TimerControlEdit):
 	def initOverlayClass(self):
 		printDebug("selectionTimerControlEdit:initOverlayClass")
 		super().initOverlayClass()
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getSelectionFormat()
 		# tc = au_timerControl.TimerControl(self.parent, self.editFormat)
 
 
 class SelectionTimerControlDigit(TimerControlDigit):
 	def initOverlayClass(self):
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getSelectionFormat()
 		tc = au_timerControl.TimerControl(self.parent, self.editFormat)
 		self.editFormatID = tc.selectionFormatID
@@ -736,8 +742,8 @@ class RecordTimeTimerControlEdit(TimerControlEdit):
 	def initOverlayClass(self):
 		printDebug("RecordTimeTimerControlEdit:initOverlayClass")
 		super().initOverlayClass()
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager
 		self.editFormat = applicationSettingsManager.getRecordTimeFormat()
 
 
@@ -752,15 +758,15 @@ class RecordDurationTimerControlEdit(TimerControlEdit):
 	def initOverlayClass(self):
 		printDebug("RecordDurationTimerControlEdit:initOverlayClass")
 		super().initOverlayClass()
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getRecordDurationFormat()
 
 
 class RecordDurationTimerControlDigit(TimerControlDigit):
 	def initOverlayClass(self):
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getRecordDurationFormat()
 		tc = au_timerControl.TimerControl(self.parent, self.editFormat)
 		self.editFormatID = tc.selectionFormatID
@@ -771,8 +777,8 @@ class SettingSelectionTimerControlDigit(TimerControlDigit):
 		self.bindGesture("kb:shift+f10", "application")
 		printDebug("SettingSelectionTimerControlDigit initOverlayClass: name= %s, %s, childID= %s" % (
 			self.name, roleLabels.get(self.role), self.IAccessibleChildID))
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		self.editFormat = applicationSettingsManager.getSelectionFormat()
 		tc = au_timerControl.TimerControl(self.parent, self.editFormat)
 		self.editFormatID = tc.selectionFormatID
@@ -810,7 +816,7 @@ class AppModule(AppModule):
 	_shellGestures = {}
 	_mainScriptToGesture = {
 		"moduleLayer": ("kb:nvda+space",),
-		# "test": ("kb:alt+control+f10",),
+		"test": ("kb:alt+control+f10",),
 	}
 
 	_shellScriptToGestures = {
@@ -885,23 +891,23 @@ class AppModule(AppModule):
 
 	def __init__(self, *args, **kwargs):
 		super(AppModule, self).__init__(*args, **kwargs)
-		import gui.message
+		# toggleDebugFlag(True)
 		version = int(self.productVersion.replace(",", ""))
 		if version < 3300:
 			wx.CallLater(
 				5000,
-				gui.message.messageBox,
+				alert,
 				# Translators: message to user to warn that audacity version is not compatible with the add-on
 				_(
 					"The addon audacityAccessEnhancement is not compatible with this version of Audacity. "
 					"The application module will be temporarily disabled."),
 				# Translators: title of message box
 				_("Warning"),
-				wx.OK | wx.ICON_WARNING)
+			)
 			raise RuntimeError(_(
 				"The addon audacityAccessEnhancement is not compatible with this version of Audacity."
 				" The application module will be temporarily disabled."))
-		# toggleDebugFlag()
+
 		au_objects.initialize(self)
 		self._reportFocusOnToolbar = False
 		self._reportSelectionChange = True
@@ -1038,8 +1044,7 @@ class AppModule(AppModule):
 	def event_appModule_loseFocus(self):
 		global GB_monitorTimer
 		import controlTypes
-		if hasattr(controlTypes, "Role") and hasattr(self, "NVDARole") and self.NVDARole is not None:
-			# for nvda version >= 2021.2
+		if hasattr(self, "NVDARole") and self.NVDARole is not None:
 			global ROLE_TRACKVIEW, ROLE_TRACK
 			import controlTypes.role
 			controlTypes.Role = self.NVDARole

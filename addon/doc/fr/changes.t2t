@@ -15,6 +15,27 @@ Téléchargement :
 
 
 
++ v3.3 (05/06/2025) +
+Compatibilité avec NVDA 2025.1.
+
+Les versions de NVDA antérieures à la 2024.1 ne sont plus supportées.
+
+Compatibilité avec audacity 3.7.1. les version inférieures à la version 3.5.1 et les versions 32 bits ne sont plus supportées.
+
+Correction de bogues :
+- la recherche de mise à jour ne se fait plus lorsque l'option "Rechercher automatiquement les mises à jour " est décochée juste après le démarrage de NVDA.
+
+
+Développement :
+- lors de l'installation de l'extension, la configuration courante n'est plus sauvegardée dans le dossier de l'extension mais est maintenant sauvegardée dans le dossier de la configuration utilisateur. Cela permet si une installation se passe mal de conserver quand même la configuration courante.
+
+
+Mise en conformité avec l'API de NVDA :
+- utilisation de la méthode "ExecAndPump" du module "systemUtils ".
+- prise en compte de l'obsolescence de gui.messageBox et gui.message.messageBox, remplacés par MessageDialog:
+ - MessageDialog est maintenant utilisé pour toutes les versions de NVDA supérieures à 2025.1.
+
+
 + v3.2 (11/10/2024) +
 - compatibilité avec NVDA 2024.2, 2024.3 et 2024.4.
 - compatibilité et tests avec Audacity 3.6.4 x64, 3.6.2 x64 et 3.5.1 x64.

@@ -1,6 +1,6 @@
 # appModules\audacity\au_timerControl.py
 # a part of audacityAccessEnhancement add-on
-# Copyright (C) 2018-2023, Paulber19
+# Copyright (C) 2018-2025, Paulber19
 # This file is covered by the GNU General Public License.
 
 from logHandler import log
@@ -157,8 +157,8 @@ class TimerControl(object):
 class AudioTimerControl(TimerControl):
 	def __init__(self):
 		obj = au_objects.audioPositionObject()
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		editFormat = applicationSettingsManager.getAudioTimeFormat()
 		super(AudioTimerControl, self).__init__(obj, editFormat)
 
@@ -216,8 +216,8 @@ class FirstSelectionTimerControl(TimerControl):
 		obj = au_objects.firstSelectionTimerObject()
 		if obj is None:
 			log.warning("no firstSelectionTimer object")
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		editFormat = applicationSettingsManager.getSelectionFormat()
 		super(FirstSelectionTimerControl, self).__init__(obj, editFormat)
 
@@ -230,8 +230,8 @@ class SecondSelectionTimerControl(TimerControl):
 		obj = au_objects.secondSelectionTimerObject()
 		if obj is None:
 			log.warning("no secondSelectionTimer object")
-		from .au_applicationSettings import ApplicationSettingsManager
-		applicationSettingsManager = ApplicationSettingsManager()
+		from .au_applicationSettings import getApplicationSettingsManager
+		applicationSettingsManager = getApplicationSettingsManager()
 		editFormat = applicationSettingsManager.getSelectionFormat()
 		super(SecondSelectionTimerControl, self).__init__(obj, editFormat)
 
