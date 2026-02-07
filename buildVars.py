@@ -45,7 +45,7 @@ This version of the extension has been tested with audacity 3.7.1, 3.6.4, 3.6.2,
 """),
 
 	# version
-	"addon_version": "3.3",
+	"addon_version": "3.3.2",
 	# Author(s)
 	"addon_author": "paulber19",
 	# URL for the add-on documentation support

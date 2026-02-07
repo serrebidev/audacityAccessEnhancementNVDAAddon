@@ -138,72 +138,47 @@ def findObjectByControlID(obj, controlID):
 	return None
 
 
-_mainFrameObject = None
-
 
 def mainFrameObject():
-	global _mainFrameObject
-	if _mainFrameObject is not None:
-		return _mainFrameObject
+
 	oDesktop = api.getDesktopObject()
 	desktopName = oDesktop.name.lower()
 	o = api.getFocusObject()
 	while o:
 		oGParent = o.parent.parent
 		if oGParent and oGParent.name and oGParent.name.lower() == desktopName:
-			_mainFrameObject = o
 			return o
 		o = o.parent
 	log.error("error no mainFrameObject")
 	return None
 
 
-_topPanelObject = None
-
 
 def topPanelObject():
-	global _topPanelObject
-	if _topPanelObject is not None:
-		return _topPanelObject
 	o = mainFrameObject()
 	if o:
 		o = getObjectByHierarchy(o, HIE_TopPanel)
 		if o:
-			_topPanelObject = o
 			return o
 	log.warning("topPanelObject not found")
 	return None
 
 
-_toolDock1Object = None
-
-
 def toolDock1Object():
-	global _toolDock1Object
-	if _toolDock1Object is not None:
-		return _toolDock1Object
 	o = mainFrameObject()
 	if o:
 		o = getObjectByHierarchy(o, HIE_ToolDock1)
 		if o:
-			_toolDock1Object = o
 			return o
 		log.warning("toolDock1Object not found")
 	return None
 
 
-_toolDock2Object = None
-
-
 def toolDock2Object():
-	global _toolDock2Object
-	if _toolDock2Object is not None:
-		return _toolDock2Object
 	o = mainFrameObject()
 	if o:
 		o = getObjectByHierarchy(o, HIE_ToolDock2)
 		if o:
-			_toolDock2Object = o
 			return o
 		log.warning("toolDock2Object not found")
 	return None
@@ -249,18 +224,11 @@ def secondSelectionTimerObject():
 	return None
 
 
-_transportToolBarObject = None
-
-
 def transportToolBarObject():
-	global _transportToolBarObject
-	if _transportToolBarObject is not None:
-		return _transportToolBarObject
 	obj = toolDock1Object()
 	if obj:
 		o = getObjectByHierarchy(obj, HIE_TransportToolBar)
 		if o:
-			_transportToolBarObject = o
 			return o
 	log.warning("transportToolBarObject not found")
 	return None
