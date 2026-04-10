@@ -1,5 +1,7 @@
 % hand key definitions
 %!PostProc (html): KEY_SHELL NVDA + Space
+%!PostProc (html): KEY_REPORT_DURATION  nvda+windows+j
+
 % shell key definitions
 %!PostProc (html): SHELL_KEY_SELECTION_LIMITS_REPORT s
 %!PostProc (html): SHELL_KEY_SELECTION_CENTER_REPORT control + s

@@ -138,7 +138,6 @@ def findObjectByControlID(obj, controlID):
 	return None
 
 
-
 def mainFrameObject():
 
 	oDesktop = api.getDesktopObject()
@@ -151,7 +150,6 @@ def mainFrameObject():
 		o = o.parent
 	log.error("error no mainFrameObject")
 	return None
-
 
 
 def topPanelObject():
@@ -300,7 +298,7 @@ def isPressed(button):
 			return True
 		return False
 	# for other buttonslike "record" button
-	if o.IAccessibleObject.accState(0) & STATE_SYSTEM_PRESSED:
+	if o and o.IAccessibleObject.accState(0) & STATE_SYSTEM_PRESSED:
 		return True
 	return False
 

@@ -14,6 +14,29 @@ Téléchargement :
 - [versions de développement ADDON_DEV_URL]
 
 
++ v3.4 (24/02/2026) +
+Compatibilité avec NVDA 2026.1.
+
+Les versions de NVDA antérieures à la 2025.1 ne sont plus supportées.
+
+Nouveautés :
+- ajout d'un script "NVDA+windows+j" pour annoncer la durée contenu dans une zone d'édition de temps.
+
+
+Corrections de bogues :
+- correction de l'erreur qui se poduisait quand un fichier récent était importé.
+
+
+Développement :
+- suppression du code concernant les versions de NVDA inférieures à la 2025.1.
+- pour afficher le "Quoi de neuf" d'une nouvelle version de l'extension, le document "changes.html" n'est plus ouvert par"urlopen", mais est téléchargé , enregistré momentanément dans le dossier "appData\local\temp" et ouvert dans le navigateur.
+- prise en compte de la fermeture du  site rawgit.com.
+- utilisation de json en lieu et place de pickle pour stoquer l'état de la mise à jour de l'extension.
+
+
+Mise en conformité avec l'API de NVDA : 
+- prise en compte du déplacement de la version de NVDA dans le module "buildVersion.py".
+
 
 + v3.3 (05/06/2025) +
 Compatibilité avec NVDA 2025.1.

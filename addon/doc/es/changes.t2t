@@ -15,6 +15,30 @@ Descarga:
 
 
 
++ v3.4  (24/02/2026) +
+Compatibilidad con NVDA 2026.1
+
+Las versiones de NVDA anteriores a 2025.1 ya no son soportadas.
+
+Nuevas características:
+- se añade un script "NVDA+windows+j" para anunciar la duración contenida en un cuadro de edición de tiempo.
+
+
+Corrección de fallos:
+- corrección del error que se producia cuando un archivo reciente era importado.
+
+
+Desarrolladores:
+- eliminado código relativo a las versiones de NVDA anteriores a 2025.1.
+- para mostrar el"Qué hay de nuevo" de una nueva versión del complemento, el documento"changes.html" ya no se abre por"urlopen", pero se descarga, se guarda momentáneamente en la carpeta "appData\local\temp" y se abre en el navegador.
+- se toma en cuenta del cierre del sitio rawgit.com para actualizar el complemento.
+- uso de json en lugar de pickle para almacenar el estado de actualización del complemento.
+
+
+Puesta en conformidad con la API de NVDA:
+- se toma en cuenta el desplazamiento de la versión de NVDA en el módulo "buildVersion.py".
+
+
 + v3.3 (05/06/2025) +
 Compatibilidad con NVDA 2025.1.
 

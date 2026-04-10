@@ -1,6 +1,6 @@
 # appModules\audacity\au_utils.py
 # A part of audacityAccessEnhancement add-on
-# Copyright (C) 2018-2025, paulber19
+# Copyright (C) 2018-2026, paulber19
 # This file is covered by the GNU General Public License.
 
 import addonHandler
@@ -18,7 +18,6 @@ addonHandler.initTranslation()
 # winuser.h constant
 
 WM_SYSCOMMAND = 0x112
-MOUSEEVENTF_WHEEL = 0x0800
 
 
 def isOpened(dialog):
@@ -36,40 +35,6 @@ def makeAddonWindowTitle(dialogTitle):
 	# Translators:  title of all add-on dialog boxs.
 	return _("{addonSummary}'s add-on - {dialogTitle}").format(
 		addonSummary=addonSummary, dialogTitle=dialogTitle)
-
-
-def getPositionXY(obj):
-	location = obj.location
-	(x, y) = (int(location[0]) + int(location[2] / 2), int(location[1]) + int(location[3] / 2))
-	return (x, y)
-
-
-def mouseClick(obj, rightButton=False, twice=False):
-	api.moveMouseToNVDAObject(obj)
-	api.setMouseObject(obj)
-	if not rightButton:
-		winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN, 0, 0, None, None)
-		winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP, 0, 0, None, None)
-		if twice:
-			time.sleep(0.1)
-			winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN, 0, 0, None, None)
-			winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP, 0, 0, None, None)
-
-	else:
-		winUser.mouse_event(winUser.MOUSEEVENTF_RIGHTDOWN, 0, 0, None, None)
-		winUser.mouse_event(winUser.MOUSEEVENTF_RIGHTUP, 0, 0, None, None)
-		if twice:
-			time.sleep(0.1)
-			winUser.mouse_event(winUser.MOUSEEVENTF_RIGHTDOWN, 0, 0, None, None)
-			winUser.mouse_event(winUser.MOUSEEVENTF_RIGHTUP, 0, 0, None, None)
-
-
-def MouseWheelForward():
-	winUser.mouse_event(MOUSEEVENTF_WHEEL, 0, 0, 120, None)
-
-
-def MouseWheelBack():
-	winUser.mouse_event(MOUSEEVENTF_WHEEL, 0, 0, -120, None)
 
 
 def executeWithSpeakOnDemand(func, *args, **kwargs):

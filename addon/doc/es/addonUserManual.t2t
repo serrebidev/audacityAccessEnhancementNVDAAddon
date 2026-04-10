@@ -71,9 +71,7 @@ En el caso de una actualización automática, y si se detecta una nueva versión
 Para una actualización de una versión estable, el botón "Qué hay de nuevo" ofrece la posibilidad, de abrir en el navegador, el historial del complemento y asi poder conocer las novedades de la versión propuesta.
 
 ++ Compatibilidad ++
-- Este complemento ha sido probado con la versión de Audacity 3.7.1, 3.6.4, 3.6.2, 3.5.1. Las versiones de Audacity inferiores ya no son soportadas, ni las versiones de 32 bits.
-
-- Algunas funciones no están disponibles en las versiones 3.3.x de Audacity.
+- Este complemento ha sido probado con la versión de Audacity 3.7.7 y 3.6.4. Las versiones de Audacity inferiores ya no son soportadas, ni las versiones de 32 bits.
 
 
 ++ Recomendaciones de configuración ++
@@ -266,8 +264,6 @@ Si la opción"Usar la barra espaciadora o la tecla Intro para pulsar en un botó
 
 
 ++ Verbalización de los cuadros de selección numérico del tiempo de Audacity ++[HDR103]
-Esta característica no está disponible en las versiones 3.3.x de 
-Audacity.
 
 Audacity muestra los cuadros de selección numérico para mostrar un tiempo como por ejemplo, "posición de audio", "inicio de la selección", "final de la selección", "centro de la selección" o "duración de la selección".
 
@@ -294,6 +290,13 @@ Sólo los siguientes formatos se tienen en cuenta:
 La tecla "NVDA + flecha arriba" permite verbalizar la información del cuadro de selección numérico.
 
 Los mismos mecanismos existen en otros cuadros de diálogo que muestra los cuadros de selección numérico de tiempo en el mismo estilo que el cuadro de diálogo "Grabación programada".
+
+Sin embargo, este mecanismo no se puede establecer en los cuadros de diálogo que le permiten generar ruido o silencio, por ejemplo.
+
+Para leer mejor la duración del cuadro de edición de tiempo de estos cuadros de diálogo, el script "KEY_REPORT_DURATION" se puede usar. La duración se anunciará bajo el formato hora minuto segundo.
+
+Es mejor no cambiar elle formato por defecto de estos cuadros (hh:mm:ss + milisegundos).
+
 
 ++ Otras adaptaciones ++[hdr104]
 - Las pistas  ya No se anuncian como líneas de una tabla y la vista de pista como una tabla.

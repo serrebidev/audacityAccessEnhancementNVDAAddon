@@ -34,13 +34,7 @@ from .au_utils import (
 	isOpened, makeAddonWindowTitle,
 	executeWithSpeakOnDemand,
 )
-try:
-	# NVDA >= 2024.1
-	speech.speech.SpeechMode.onDemand
-	speakOnDemand = {"speakOnDemand": True}
-except AttributeError:
-	# NVDA <= 2023.3
-	speakOnDemand = {}
+speakOnDemand = {"speakOnDemand": True}
 from . import au_time
 from . import au_timerControl
 from . import au_objects
@@ -69,9 +63,8 @@ del sys.path[-1]
 sharedPath = os.path.join(_curAddon.path, "shared")
 sys.path.append(sharedPath)
 from au_addonConfigManager import _addonConfigManager
-from messages import alert
+from au_messages import alert
 del sys.path[-1]
-del sys.modules["messages"]
 
 addonHandler.initTranslation()
 
@@ -816,6 +809,7 @@ class AppModule(AppModule):
 	_shellGestures = {}
 	_mainScriptToGesture = {
 		"moduleLayer": ("kb:nvda+space",),
+		"reportDuration": ("kb:nvda+windows+j",),
 		"test": ("kb:alt+control+f10",),
 	}
 
@@ -884,6 +878,9 @@ class AppModule(AppModule):
 		# Translators: Input help mode message
 		# for launch module layer command.
 		"moduleLayer": (_("Launch  command shell"), None),
+		# Translators: Input help mode message
+		# for report duration command
+		"reportDuration": (_("Report the duration contained in a time edit zone"), None),
 		# Translators: Input help mode message
 		# for display shell command help dialog command.
 		"displayHelp": (_("Display shell scripts's list"), None),
@@ -1391,6 +1388,32 @@ class AppModule(AppModule):
 		else:
 			# Translators: message to user when Audacity guide is not found.
 			ui.message(_("Error: audacity guide is not found"))
+
+	def script_reportDuration(self, gesture):
+		o = api.getFocusObject()
+		from controlTypes import Role
+		if o.role != Role.STATICTEXT:
+			return
+		from .au_timerControl import (
+			getTimeMessage, _selectionFormatIDs, TimerControl,
+		)
+		editFormat = "hh:mm:ss + milliseconds"
+		if o.childCount == 0:
+			# it's a digit, duration is parent name
+			tc = TimerControl(o.parent, editFormat)
+		else:
+			tc = TimerControl(o, editFormat)
+		(l, t) = tc.getLabelAndTime()
+		msg = getTimeMessage(t)
+		ui.message(msg)
+		if o.childCount != 0:
+			return
+		digitID = o.IAccessibleChildID - 1
+		editFormatID = _selectionFormatIDs[editFormat]
+		digitIDs = TimerControlDigit._selectionFormatToDigitIDs[editFormatID]
+		digitName = _digitNames[digitIDs[digitID]]
+		msg = "%s %s" % (digitName, o.IAccessibleObject.accName(o.IAccessibleChildID))
+		ui.message(msg)
 
 	def script_test(self, gesture):
 		speech.speakMessage("test audacity")

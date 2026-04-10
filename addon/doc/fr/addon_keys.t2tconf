@@ -1,6 +1,6 @@
 % main key definitions
 %!PostProc (html): KEY_SHELL NVDA + Espace
-%!PostProc (html): KEY_AUTOMATIC_SELECTION_REPORT  f4
+%!PostProc (html): KEY_REPORT_DURATION  nvda+windows+j
 
 % shell key definitions
 %!PostProc (html): SHELL_KEY_SELECTION_LIMITS_REPORT s

@@ -76,10 +76,7 @@ In the case of an automatic update and if a new version is detected, the "Update
 In the case of an automatic update and if a new version is detected, the "Update" dialog box is displayed to suggest:
 
 ++ Compatibility ++
-- This version of the extension has been tested with audacity 3.7.1, 3.6.4, 3.6.2, 3.5.1. Lower versions are no longer supported, nor 32-bit versions.
-
-- Compatibility with versions prior to 3.3.0 is not guaranteed.
-- Some features are not available under Audacity versions 3.3.x.
+- This version of the extension has been tested with audacity 3.7.7 and, 3.6.4. Lower versions are no longer supported, nor 32-bit versions.
 
 
 ++ Necessary configuration ++
@@ -274,8 +271,6 @@ If the option "Use space bar or Enter key to press a button" located in "Options
 
 
 ++ Vocalization of the Audacity time's edit spin boxes ++[HDR103]
-This feature is not available in Audacity versions 3.3.x.
-
 Audacity shows some edit spin boxes for editing time like, for exemple: audio position, selection start, selection end, selection center, selection length .
 
 These selection boxes present the information according to the format defined by the user using the contextual menu of the box.
@@ -303,6 +298,12 @@ But only the following format are taken into account:
 The "NVDA + upArrow" key command allows you to vocalize the full-time.
 
 The same mechanisms are put in place in other edit spin boxes which are areas of editing time in the same style as the "timer Record" dialog.
+
+However, this mechanism cannot be put in place in the dialogue boxes which make it possible to generate noise or silence for example.
+
+In order to better read the duration of the time editing area of these boxes, the "KEY_REPORT_DURATION" script can be used. The duration will be announced in the time minute second form.
+
+It is preferable not to modify the default format of these areas (HH: MM: SS + Milliseconds).
 
 ++ Other adapttations ++[hdr104]
 - The tracks are not announced as rows and the tracks view as a table.

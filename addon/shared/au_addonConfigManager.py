@@ -181,7 +181,7 @@ class AddonConfigurationManager():
 		config.post_configSave.register(self.handlePostConfigSave)
 
 	def warnConfigurationReset(self):
-		from messages import alert
+		from au_messages import alert
 		wx.CallLater(
 			100,
 			alert,

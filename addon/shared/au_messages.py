@@ -1,4 +1,4 @@
-# globalPlugins\shared\message.py
+# globalPlugins\shared\au_message.py
 # a part of audacityAccessEnhancement add-on
 # Copyright 2025 paulber19
 # This file is covered by the GNU General Public License.
@@ -8,7 +8,13 @@ import gui
 import gui.message
 import wx
 from enum import IntEnum
-from versionInfo import version_year, version_major
+try:
+	# for nvda versions < 2026.1
+	from versionInfo import version_year, version_major
+except ImportError:
+	# for nvda versions >= 2026.1
+	from buildVersion import version_year, version_major
+
 NVDAVersion = [version_year, version_major]
 
 if NVDAVersion < [2025, 1]:
