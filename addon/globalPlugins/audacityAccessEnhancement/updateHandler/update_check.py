@@ -246,7 +246,7 @@ class CheckForAddonUpdate(object):
 			return
 
 		self.addon = addonHandler.getCodeAddon()
-		log.warning("Check for %s add-on update" % self.addon.manifest["name"])
+		log.info("Check for %s add-on update" % self.addon.manifest["name"])
 		self.addonSummary = self.addon.manifest["summary"]
 		self.auto = auto
 		self.releaseToDev = releaseToDev
@@ -263,7 +263,7 @@ class CheckForAddonUpdate(object):
 			log.debug("service in maintenance")
 			if auto:
 				return
-			warn(
+			wx.CallAfter(warn,
 				# Translators: message to user that the update service is temporarily in maintenance
 				_("The service is temporarily under maintenance. Please, try again later."),
 				self.title,
@@ -276,7 +276,7 @@ class CheckForAddonUpdate(object):
 			return
 		newUpdate = self.checkForNewUpdate(addonUpdateInfos)
 		if newUpdate is None:
-			self.upToDateDialog(self.auto)
+			wx.CallAfter(self.upToDateDialog, self.auto)
 			return
 		(version, url, minimumNVDAVersion, lastTestedNVDAVersion) = newUpdate
 		if minimumNVDAVersion is None:
@@ -295,7 +295,7 @@ class CheckForAddonUpdate(object):
 					"The update is not compatible with this version of NVDA. "
 					"Minimum NVDA version: {minYear}.{minMajor}, last tested: {testedYear}.{testedMajor}.").format(
 						minYear=minimumYear, minMajor=minimumMajor, testedYear=lastTestedYear, testedMajor=lastTestedMajor)
-				alert(
+				wx.CallAfter(alert,
 					incompatibleAddonMsg,
 					makeAddonWindowTitle(NVDAString("Error")),
 				)
@@ -306,7 +306,7 @@ class CheckForAddonUpdate(object):
 			url=url,
 			version=version)
 		compatibilityRange = ("%s.%s" % (minimumYear, minimumMajor), "%s.%s" % (lastTestedYear, lastTestedMajor))
-		self.availableUpdateDialog(version, url, isVersionCompatible, compatibilityRange)
+		wx.CallAfter(self.availableUpdateDialog, version, url, isVersionCompatible, compatibilityRange)
 
 	def shouldByPassSiteInMaintenance(self):
 		byPassMaintenanceFile = "paulber007AllMyAddons-maintenance.bypass"
@@ -407,12 +407,12 @@ Do you want to ignore this incompatibility and still download it now?""") .forma
 			except IOError as e:
 				log.warning("Fail to download update informations: error = %s" % e)
 				if not self.auto:
-					self.errorUpdateDialog()
+					wx.CallAfter(self.errorUpdateDialog)
 				return None
 			if res is None or res.code not in [200, 202]:
 				log.warning("no update informations: code = %s" % res.code if res is not None else "None")
 				if not self.auto:
-					self.errorUpdateDialog()
+					wx.CallAfter(self.errorUpdateDialog)
 				return None
 			with open(self.destPath, "wb") as local:
 				local.write(res.read())
@@ -428,7 +428,7 @@ Do you want to ignore this incompatibility and still download it now?""") .forma
 		except Exception:
 			log.warning("%s file cannot be opened " % file)
 			if not self.auto:
-				self.errorUpdateDialog()
+				wx.CallAfter(self.errorUpdateDialog)
 			return None
 		mod = importCode(res.name, "myAddonsLatest")
 		res.close()
@@ -438,7 +438,7 @@ Do you want to ignore this incompatibility and still download it now?""") .forma
 			except Exception:
 				log.warning("error: cannot remove %s file" % file)
 		if mod is None:
-			self.errorUpdateDialog()
+			wx.CallAfter(self.errorUpdateDialog)
 			return
 		updateInfos = mod.lastAddonVersions.copy()
 		del mod

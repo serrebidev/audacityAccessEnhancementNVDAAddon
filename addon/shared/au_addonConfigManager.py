@@ -307,7 +307,7 @@ class AddonConfigurationManager():
 			val = Validator()
 			self.addonConfig.validate(val, copy=True)
 			self.addonConfig.write()
-			log.warning("%s: configuration saved" % _addonName)
+			log.info("%s: configuration saved" % _addonName)
 			# if an installation took place, the configuration file was renamed.
 			# so you have to do the same thing after saving
 			if os.path.exists(self.oldConfigFile):

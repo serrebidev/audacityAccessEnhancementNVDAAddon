@@ -10,6 +10,8 @@ import globalVars
 import time
 import wx
 import random
+import threading
+from logHandler import log
 from . import state
 state.initialize()
 addonHandler.initTranslation()
@@ -40,14 +42,25 @@ def autoUpdateCheck(releaseToDev):
 	updateChecker = wx.CallLater(r * 1000, addonUpdateCheck, True, releaseToDev)
 
 
+def _runAddonUpdateCheck(auto, releaseToDev):
+	from .update_check import CheckForAddonUpdate
+	try:
+		CheckForAddonUpdate(
+			updateInfosFile=None,
+			auto=auto,
+			releaseToDev=releaseToDev)
+	except Exception:
+		log.exception("audacityAccessEnhancement: update check failed")
+
+
 def addonUpdateCheck(auto, releaseToDev):
 	global updateChecker
 	if updateChecker is not None:
 		updateChecker.Stop()
 		updateChecker = None
-	from .update_check import CheckForAddonUpdate
-	wx.CallAfter(
-		CheckForAddonUpdate,
-		updateInfosFile=None,
-		auto=auto,
-		releaseToDev=releaseToDev)
+	t = threading.Thread(
+		target=_runAddonUpdateCheck,
+		args=(auto, releaseToDev),
+		name="audacityAccessEnhancementUpdateCheck")
+	t.daemon = True
+	t.start()
